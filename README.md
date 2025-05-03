@@ -11,5 +11,5 @@ By integrating these methodologies, our hybrid GAN aims to address the dual chal
   title={Hybrid GAN for Brain Tumor MRI Augmentation},
   author={Raaj Shekhar},
   year={2025},
-  note={https://github.com/Raaj01Shekhar/hybrid-gan}
+  note={https://github.com/Raaj01Shekhar/Hybrid-GAN}
 }
