@@ -3,7 +3,6 @@
 
 # In[1]:
 
-
 import datetime
 # Get current date and time
 current_time = datetime.datetime.now()
@@ -13,9 +12,7 @@ print("Time :", current_time.strftime("%I:%M:%S %p"))  # 12-hour format with AM/
 print("Date :", current_time.strftime("%d-%m-%Y"))
 print("Day  :", current_time.strftime("%A"))
 
-
 # In[2]:
-
 
 import os
 import shutil
@@ -30,6 +27,10 @@ import time
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 import subprocess
+
+# Mount Google Drive
+from google.colab import drive
+drive.mount('/content/drive')
 
 # =============================
 # GPU Configuration
@@ -69,8 +70,8 @@ print("\n")
 # =============================
 # Configuration & Hyperparameters
 # =============================
-DATASET_PATH = r"C:\Users\RAAJ\Desktop\Important Brain MRI Dataset\Training"
-OUTPUT_PATH  = r"C:\Users\RAAJ\Desktop\21_07_DCGAN+CGAN+WGAN"
+DATASET_PATH = "/content/drive/MyDrive/Project BTD (GAN)/Important Brain MRI Dataset/Training"
+OUTPUT_PATH  = "/content/drive/MyDrive/Results Nvidia RTX 3080 TI/Hybrid GAN"
 
 # Clear the output folder at each run
 if os.path.exists(OUTPUT_PATH):
@@ -85,7 +86,7 @@ CHANNELS   = 1
 # GAN Hyperparameters for WGAN-GP
 LATENT_DIM      = 100        # Dimension of random noise vector
 NUM_CLASSES     = 4          # glioma, meningioma, no tumor, pituitary
-BATCH_SIZE      = 20       # Increased from 4 to utilize GPU better
+BATCH_SIZE      = 128       # Increased from 4 to utilize GPU better
 EPOCHS          = 500        
 N_DISCRIMINATOR = 1          
 GP_WEIGHT       = 1          
@@ -307,8 +308,6 @@ class HybridGAN(tf.keras.Model):
         
         return {m.name: m.result() for m in self.metrics}
 
-    # Rest of the class remains unchanged...
-
 # =============================
 # Model Initialization
 # =============================
@@ -332,8 +331,6 @@ Hybrid_GAN.compile(
     g_optimizer=tf.keras.optimizers.Adam(learning_rate=GENERATOR_LR, beta_1=0.5, beta_2=0.9),
     d_optimizer=tf.keras.optimizers.Adam(learning_rate=DISCRIMINATOR_LR, beta_1=0.5, beta_2=0.9)
 )
-
-# Rest of the code remains the same...
 
 # =============================
 # Display Model Summaries
@@ -411,9 +408,7 @@ plt.legend()
 plt.savefig(os.path.join(OUTPUT_PATH, "training_curves.png"))
 plt.close()
 
-
 # In[3]:
-
 
 # =============================
 # Generate and Save Augmented Images
@@ -438,7 +433,7 @@ def generate_augmented_images():
         class_dir = os.path.join(DATASET_PATH, class_name)
         num_images = count_images_in_class(class_dir)
         print(f"Generating images for class '{class_name}' (Total: {num_images})")
-        out_class_dir = os.path.join(OUTPUT_PATH,"Training", class_name)
+        out_class_dir = os.path.join(OUTPUT_PATH, "Training", class_name)
         # Clear the output folder at each run
         if os.path.exists(out_class_dir):
             shutil.rmtree(out_class_dir)
@@ -461,10 +456,7 @@ def generate_augmented_images():
 generate_augmented_images()
 print("Augmented image generation complete!")
 
-
-
 # In[4]:
-
 
 # =============================
 # XLA/CUDA Configuration Fix
@@ -483,9 +475,7 @@ if physical_devices:
         print("Error in memory growth enbaling.")
         pass
 
-
 # In[5]:
-
 
 import os
 import gc
@@ -710,8 +700,8 @@ def print_metrics(results):
 
 # Usage Example
 if __name__ == "__main__":
-    DATASET_PATH = r"C:\Users\RAAJ\Desktop\Important Brain MRI Dataset\Training"
-    OUTPUT_PATH = r"C:\Users\RAAJ\Desktop\21_07_DCGAN+CGAN+WGAN\Training"
+    DATASET_PATH = "/content/drive/MyDrive/Project BTD(GAN)/Important Brain MRI Dataset/Training"
+    OUTPUT_PATH = "/content/drive/MyDrive/Results Nvidia RTX 3080 TI/Hybrid GAN/Training"
     
     try:
         analyser = GANAnalyser(DATASET_PATH, OUTPUT_PATH, batch_size=16)
@@ -720,9 +710,7 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Error: {str(e)}")
 
-
 # In[6]:
-
 
 import datetime
 # Get current date and time
@@ -732,34 +720,3 @@ print("This notebooks code execution is ending at:")
 print("Time :", current_time.strftime("%I:%M:%S %p"))  # 12-hour format with AM/PM
 print("Date :", current_time.strftime("%d-%m-%Y"))
 print("Day  :", current_time.strftime("%A"))
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
