@@ -27,11 +27,15 @@ import time
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 import subprocess
-from google.colab import drive
 
 # Mount Google Drive
 from google.colab import drive
 drive.mount('/content/drive')
+# Check if mount was successful
+if os.path.exists('/content/drive'):
+    print("✅ Google Drive is mounted successfully.")
+else:
+    print("❌ Failed to mount Google Drive.")
 
 # =============================
 # GPU Configuration
